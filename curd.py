@@ -4,11 +4,12 @@ from database import get_db
 from sqlalchemy.orm import Session
 from models import ToDo
 from typing import List
+from typing import Optional
 router = APIRouter()
 
 class ToDoCreate(BaseModel):
     title: str
-    description: str
+    description: Optional[str]=None
     done: bool
 class ToDoResponse(ToDoCreate):
     id: int
