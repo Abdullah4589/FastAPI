@@ -3,16 +3,18 @@ from database import engine
 from models import Base
 from curd import router as crud_router
 from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
+
+# This is the new, more permissive CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000/"],
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
+
+Base.metadata.create_all(bind=engine)
+
 app.include_router(crud_router, prefix="/todos", tags=["todos"])
-@app.get("/")
-def home(title: str ,description: str,done: bool):
-    return {"message": f"{title}-{description}-{done}"}

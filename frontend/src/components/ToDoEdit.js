@@ -22,7 +22,7 @@ const ToDoEdit = ({ todo, onUpdate }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, done: todo.done }),
             });
             onUpdate();
         } catch (error) {

@@ -43,18 +43,28 @@ const ToDoList = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+        console.log("Creating new todo with data:", newTodo); // Log data being sent
         try {
-            await fetch('http://127.0.0.1:8000/todos/', {
+            const response = await fetch('http://127.0.0.1:8000/todos/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newTodo),
             });
-            setNewTodo({ title: '', description: '' });
+
+            console.log("Response status:", response.status); // Log response status
+            const responseData = await response.json();
+            console.log("Response data:", responseData); // Log response data
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+
+            setNewTodo({ title: '', description: '', done: false });
             fetchTodos();
         } catch (error) {
-            console.error("Error creating todo:", error);
+            console.error("Error creating todo:", error); // Log any error
         }
     };
 
